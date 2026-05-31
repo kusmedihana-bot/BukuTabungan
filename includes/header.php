@@ -1,3 +1,4 @@
+<?php require_once dirname(__DIR__) . '/config/base_url.php'; ?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -6,7 +7,7 @@
     <title><?= htmlspecialchars($pageTitle ?? 'BukuTabungan') ?> — BukuTabungan</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
 </head>
 <body>
 <div class="app-wrapper">
@@ -30,11 +31,11 @@
             <button class="sidebar-close" id="sidebarClose" aria-label="Close menu">✕</button>
         </div>
         <ul class="nav-links">
-            <li><a href="/bukutabungan/index.php" class="<?= basename($_SERVER['PHP_SELF']) === 'index.php' ? 'active' : '' ?>"><span class="nav-icon">🏠</span> Dashboard</a></li>
-            <li><a href="/bukutabungan/transactions.php" class="<?= basename($_SERVER['PHP_SELF']) === 'transactions.php' ? 'active' : '' ?>"><span class="nav-icon">💸</span> Transaksi</a></li>
-            <li><a href="/bukutabungan/wallets.php" class="<?= basename($_SERVER['PHP_SELF']) === 'wallets.php' ? 'active' : '' ?>"><span class="nav-icon">👛</span> Dompet</a></li>
-            <li><a href="/bukutabungan/categories.php" class="<?= basename($_SERVER['PHP_SELF']) === 'categories.php' ? 'active' : '' ?>"><span class="nav-icon">🏷️</span> Kategori</a></li>
-            <li><a href="/bukutabungan/summary.php" class="<?= basename($_SERVER['PHP_SELF']) === 'summary.php' ? 'active' : '' ?>"><span class="nav-icon">📊</span> Ringkasan</a></li>
+            <li><a href="<?= BASE_URL ?>/index.php" class="<?= basename($_SERVER['PHP_SELF']) === 'index.php' ? 'active' : '' ?>"><span class="nav-icon">🏠</span> Dashboard</a></li>
+            <li><a href="<?= BASE_URL ?>/transactions.php" class="<?= basename($_SERVER['PHP_SELF']) === 'transactions.php' ? 'active' : '' ?>"><span class="nav-icon">💸</span> Transaksi</a></li>
+            <li><a href="<?= BASE_URL ?>/wallets.php" class="<?= basename($_SERVER['PHP_SELF']) === 'wallets.php' ? 'active' : '' ?>"><span class="nav-icon">👛</span> Dompet</a></li>
+            <li><a href="<?= BASE_URL ?>/categories.php" class="<?= basename($_SERVER['PHP_SELF']) === 'categories.php' ? 'active' : '' ?>"><span class="nav-icon">🏷️</span> Kategori</a></li>
+            <li><a href="<?= BASE_URL ?>/summary.php" class="<?= basename($_SERVER['PHP_SELF']) === 'summary.php' ? 'active' : '' ?>"><span class="nav-icon">📊</span> Ringkasan</a></li>
         </ul>
     </nav>
 

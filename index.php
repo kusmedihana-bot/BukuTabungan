@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/config/base_url.php'; ?>
 <?php
 require_once __DIR__ . '/config/database.php';
 $db = Database::getInstance()->getConnection();
@@ -59,7 +60,7 @@ include 'includes/header.php';
     </div>
     <?php endforeach; ?>
     <?php if (empty($wallets)): ?>
-    <div style="color: var(--text2); font-size:14px;">Belum ada dompet. <a href="/wallets.php" style="color:var(--accent2)">Tambah sekarang</a></div>
+    <div style="color: var(--text2); font-size:14px;">Belum ada dompet. <a href="<?= BASE_URL ?>/wallets.php" style="color:var(--accent2)">Tambah sekarang</a></div>
     <?php endif; ?>
 </div>
 
@@ -69,7 +70,7 @@ include 'includes/header.php';
     <?php if (empty($recentTx)): ?>
         <div class="empty-state">
             <div class="empty-icon">📭</div>
-            <p>Belum ada transaksi. <a href="/transactions.php" style="color:var(--accent2)">Tambah transaksi</a></p>
+            <p>Belum ada transaksi. <a href="<?= BASE_URL ?>/transactions.php" style="color:var(--accent2)">Tambah transaksi</a></p>
         </div>
     <?php else: ?>
     <table class="data-table">
