@@ -105,7 +105,7 @@ $monthNamesShort = ['01'=>'Jan','02'=>'Feb','03'=>'Mar','04'=>'Apr','05'=>'Mei',
 // ── NAV HELPERS ──
 function navUrl($params) {
     $base = array_merge($_GET, $params);
-    return '/bukutabungan/summary.php?' . http_build_query($base);
+    return $_SERVER['SCRIPT_NAME'] . '?' . http_build_query($base);
 }
 $prevDay   = date('Y-m-d', strtotime($today . ' -1 day'));
 $nextDay   = date('Y-m-d', strtotime($today . ' +1 day'));
