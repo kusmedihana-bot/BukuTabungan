@@ -172,19 +172,22 @@ include 'includes/header.php';
             </div>
         </div>
     </div>
-    <div class="content-section">
-        <div class="section-title">Per Kategori — <?= $dayLabel ?></div>
-            <?php if (empty($dailyByCat)): ?>
-                <div class="empty-state"><div class="empty-icon">🌺</div><p>Belum ada data hari ini.</p></div>
+    <div class="content-grid">
+        <div class="content-section">
+            <div class="section-title">Transaksi — <?= $dayLabel ?></div>
+            <?php if (empty($dailyTx)): ?>
+                <div class="empty-state"><div class="empty-icon">🌸</div><p>Belum ada transaksi di hari ini.</p></div>
             <?php else: ?>
             <table class="data-table">
-                <thead><tr><th>Kategori</th><th>Tipe</th><th>Total</th></tr></thead>
+                <thead><tr><th>Waktu</th><th>Kategori</th><th>Keterangan</th><th>Dompet</th><th>Jumlah</th></tr></thead>
                 <tbody>
-                    <?php foreach ($dailyByCat as $row): ?>
+                    <?php foreach ($dailyTx as $tx): ?>
                     <tr>
-                        <td><?= $row['icon'] ?> <?= htmlspecialchars($row['name']) ?></td>
-                        <td><span class="badge badge-<?= $row['type'] ?>"><?= $row['type']==='income'?'📥 Masuk':'📤 Keluar' ?></span></td>
-                        <td class="amount-<?= $row['type'] ?>">Rp <?= number_format($row['total'],0,',','.') ?></td>
+                        <td><?= date('H:i', strtotime($tx['created_at'])) ?></td>
+                        <td><?= $tx['cat_icon'] ?> <?= htmlspecialchars($tx['cat_name']) ?></td>
+                        <td><?= htmlspecialchars($tx['description'] ?: '—') ?></td>
+                        <td><?= htmlspecialchars($tx['wallet_name']) ?></td>
+                        <td class="amount-<?= $tx['type'] ?>"><?= $tx['type']==='income'?'+':'-' ?>Rp <?= number_format($tx['amount'],0,',','.') ?></td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -192,25 +195,23 @@ include 'includes/header.php';
             <?php endif; ?>
         </div>
         <div class="content-section">
-        <div class="section-title">Transaksi — <?= $dayLabel ?></div>
-        <?php if (empty($dailyTx)): ?>
-            <div class="empty-state"><div class="empty-icon">🌸</div><p>Belum ada transaksi di hari ini.</p></div>
-        <?php else: ?>
-        <table class="data-table">
-            <thead><tr><th>Waktu</th><th>Kategori</th><th>Keterangan</th><th>Dompet</th><th>Jumlah</th></tr></thead>
-            <tbody>
-                <?php foreach ($dailyTx as $tx): ?>
-                <tr>
-                    <td><?= date('H:i', strtotime($tx['created_at'])) ?></td>
-                    <td><?= $tx['cat_icon'] ?> <?= htmlspecialchars($tx['cat_name']) ?></td>
-                    <td><?= htmlspecialchars($tx['description'] ?: '—') ?></td>
-                    <td><?= htmlspecialchars($tx['wallet_name']) ?></td>
-                    <td class="amount-<?= $tx['type'] ?>"><?= $tx['type']==='income'?'+':'-' ?>Rp <?= number_format($tx['amount'],0,',','.') ?></td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-        <?php endif; ?>
+            <div class="section-title">Per Kategori</div>
+            <?php if (empty($dailyByCat)): ?>
+                <div class="empty-state"><div class="empty-icon">🌺</div><p>Belum ada data hari ini.</p></div>
+            <?php else: ?>
+            <table class="data-table">
+                <thead><tr><th>Kategori</th><th>Total</th></tr></thead>
+                <tbody>
+                    <?php foreach ($dailyByCat as $row): ?>
+                    <tr>
+                        <td><?= $row['icon'] ?> <?= htmlspecialchars($row['name']) ?></td>
+                        <td class="amount-<?= $row['type'] ?>">Rp <?= number_format($row['total'],0,',','.') ?></td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+            <?php endif; ?>
+        </div>
     </div>
 </div>
 
@@ -312,46 +313,47 @@ include 'includes/header.php';
             </div>
         </div>
     </div>
-    <div class="content-section">
-        <div class="section-title">Per Bulan — <?= $year ?></div>
-        <?php if (empty($yearByMonth)): ?>
-            <div class="empty-state"><div class="empty-icon">🌸</div><p>Belum ada data tahun ini.</p></div>
-        <?php else: ?>
-        <table class="data-table">
-            <thead><tr><th>Bulan</th><th>Pemasukan</th><th>Pengeluaran</th><th>Net</th></tr></thead>
-            <tbody>
-                <?php foreach ($yearByMonth as $row): $net = $row['income']-$row['expense']; ?>
-                <tr>
-                    <td><?= $monthNamesShort[$row['m']] ?? $row['m'] ?></td>
-                    <td class="amount-income">+Rp <?= number_format($row['income'],0,',','.') ?></td>
-                    <td class="amount-expense">-Rp <?= number_format($row['expense'],0,',','.') ?></td>
-                    <td style="color:<?= $net>=0?'#059669':'var(--red)' ?>; font-family:'Quicksand',sans-serif; font-weight:700">
-                        <?= $net>=0?'+':'' ?>Rp <?= number_format($net,0,',','.') ?>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-        <?php endif; ?>
-    </div>
-    <div class="content-section" style="margin-top:20px;">
-        <div class="section-title">Per Kategori — <?= $year ?></div>
-        <?php if (empty($yearByCat)): ?>
-            <div class="empty-state"><div class="empty-icon">🌸</div><p>Belum ada data tahun ini.</p></div>
-        <?php else: ?>
-        <table class="data-table">
-            <thead><tr><th>Kategori</th><th>Tipe</th><th>Total</th></tr></thead>
-            <tbody>
-                <?php foreach ($yearByCat as $row): ?>
-                <tr>
-                    <td><?= $row['icon'] ?> <?= htmlspecialchars($row['name']) ?></td>
-                    <td><span class="badge badge-<?= $row['type'] ?>"><?= $row['type']==='income'?'📥 Masuk':'📤 Keluar' ?></span></td>
-                    <td class="amount-<?= $row['type'] ?>">Rp <?= number_format($row['total'],0,',','.') ?></td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-        <?php endif; ?>
+    <div class="content-grid">
+        <div class="content-section">
+            <div class="section-title">Per Bulan — <?= $year ?></div>
+            <?php if (empty($yearByMonth)): ?>
+                <div class="empty-state"><div class="empty-icon">🌸</div><p>Belum ada data tahun ini.</p></div>
+            <?php else: ?>
+            <table class="data-table">
+                <thead><tr><th>Bulan</th><th>Pemasukan</th><th>Pengeluaran</th><th>Net</th></tr></thead>
+                <tbody>
+                    <?php foreach ($yearByMonth as $row): $net = $row['income']-$row['expense']; ?>
+                    <tr>
+                        <td><?= $monthNamesShort[$row['m']] ?? $row['m'] ?></td>
+                        <td class="amount-income">+Rp <?= number_format($row['income'],0,',','.') ?></td>
+                        <td class="amount-expense">-Rp <?= number_format($row['expense'],0,',','.') ?></td>
+                        <td style="color:<?= $net>=0?'#059669':'var(--red)' ?>; font-family:'Quicksand',sans-serif; font-weight:700">
+                            <?= $net>=0?'+':'' ?>Rp <?= number_format($net,0,',','.') ?>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+            <?php endif; ?>
+        </div>
+        <div class="content-section">
+            <div class="section-title">Per Kategori</div>
+            <?php if (empty($yearByCat)): ?>
+                <div class="empty-state"><div class="empty-icon">🌸</div><p>Belum ada data tahun ini.</p></div>
+            <?php else: ?>
+            <table class="data-table">
+                <thead><tr><th>Kategori</th><th>Total</th></tr></thead>
+                <tbody>
+                    <?php foreach ($yearByCat as $row): ?>
+                    <tr>
+                        <td><?= $row['icon'] ?> <?= htmlspecialchars($row['name']) ?></td>
+                        <td class="amount-<?= $row['type'] ?>">Rp <?= number_format($row['total'],0,',','.') ?></td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+            <?php endif; ?>
+        </div>
     </div>
 </div>
 
