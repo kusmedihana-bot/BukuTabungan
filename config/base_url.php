@@ -17,3 +17,4 @@ if (!defined('BASE_URL')) {
 
     define('BASE_URL', $scheme . '://' . $host . $base);
 }
+<?php // cache bust Sun May 31 11:53:53 UTC 2026 ?>
