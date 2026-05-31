@@ -76,7 +76,7 @@ include 'includes/header.php';
             </div>
             <div class="form-group">
                 <label>Ikon (emoji)</label>
-                <input type="text" name="icon" placeholder="📦" value="📦" style="font-size:18px;">
+                <input type="text" name="icon" placeholder="" value="📦" style="font-size:18px;">
             </div>
             <button type="submit" class="btn btn-primary btn-full">➕ Tambah Kategori</button>
         </form>
