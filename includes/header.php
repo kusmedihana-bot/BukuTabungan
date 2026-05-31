@@ -6,7 +6,7 @@
     <title><?= htmlspecialchars($pageTitle ?? 'BukuTabungan') ?> — BukuTabungan</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/bukutabungan/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
 <div class="app-wrapper">
