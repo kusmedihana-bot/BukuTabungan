@@ -35,6 +35,16 @@ $dailyTx = $db->prepare($dailySql);
 $dailyTx->execute($dailyParams);
 $dailyTx = $dailyTx->fetchAll();
 
+// ── DAILY BY CATEGORY ──
+$dailyByCatSql = "SELECT c.id, c.name, c.icon, COALESCE(SUM(t.amount),0) as total, t.type
+                  FROM transactions t
+                  JOIN categories c ON c.id = t.category_id
+                  WHERE t.transaction_date=?";
+$dbcParams = [$today];
+if ($catFilter) { $dailyByCatSql .= " AND t.category_id = ?"; $dbcParams[] = $catFilter; }
+$dailyByCatSql .= " GROUP BY c.id ORDER BY total DESC";
+$dailyByCat = $db->prepare($dailyByCatSql); $dailyByCat->execute($dbcParams); $dailyByCat = $dailyByCat->fetchAll();
+
 // ── MONTHLY ──
 $monthIncome  = $db->prepare("SELECT COALESCE(SUM(amount),0) FROM transactions WHERE type='income' AND strftime('%Y-%m',transaction_date)=?");
 $monthIncome->execute([$month]); $monthIncome = $monthIncome->fetchColumn();
@@ -77,6 +87,15 @@ $ybmParams = [$year];
 if ($catFilter) { $yearByMonthSql .= " AND category_id = ?"; $ybmParams[] = $catFilter; }
 $yearByMonthSql .= " GROUP BY m ORDER BY m";
 $yearByMonth = $db->prepare($yearByMonthSql); $yearByMonth->execute($ybmParams); $yearByMonth = $yearByMonth->fetchAll();
+
+$yearByCatSql = "SELECT c.id, c.name, c.icon, COALESCE(SUM(t.amount),0) as total, t.type
+                 FROM transactions t
+                 JOIN categories c ON c.id = t.category_id
+                 WHERE strftime('%Y',t.transaction_date)=?";
+$ybcParams = [$year];
+if ($catFilter) { $yearByCatSql .= " AND t.category_id = ?"; $ybcParams[] = $catFilter; }
+$yearByCatSql .= " GROUP BY c.id ORDER BY total DESC";
+$yearByCat = $db->prepare($yearByCatSql); $yearByCat->execute($ybcParams); $yearByCat = $yearByCat->fetchAll();
 
 $monthNames = ['01'=>'Januari','02'=>'Februari','03'=>'Maret','04'=>'April','05'=>'Mei','06'=>'Juni',
                '07'=>'Juli','08'=>'Agustus','09'=>'September','10'=>'Oktober','11'=>'November','12'=>'Desember'];
@@ -154,6 +173,25 @@ include 'includes/header.php';
         </div>
     </div>
     <div class="content-section">
+        <div class="section-title">Per Kategori — <?= $dayLabel ?></div>
+            <?php if (empty($dailyByCat)): ?>
+                <div class="empty-state"><div class="empty-icon">🌺</div><p>Belum ada data hari ini.</p></div>
+            <?php else: ?>
+            <table class="data-table">
+                <thead><tr><th>Kategori</th><th>Tipe</th><th>Total</th></tr></thead>
+                <tbody>
+                    <?php foreach ($dailyByCat as $row): ?>
+                    <tr>
+                        <td><?= $row['icon'] ?> <?= htmlspecialchars($row['name']) ?></td>
+                        <td><span class="badge badge-<?= $row['type'] ?>"><?= $row['type']==='income'?'📥 Masuk':'📤 Keluar' ?></span></td>
+                        <td class="amount-<?= $row['type'] ?>">Rp <?= number_format($row['total'],0,',','.') ?></td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+            <?php endif; ?>
+        </div>
+        <div class="content-section">
         <div class="section-title">Transaksi — <?= $dayLabel ?></div>
         <?php if (empty($dailyTx)): ?>
             <div class="empty-state"><div class="empty-icon">🌸</div><p>Belum ada transaksi di hari ini.</p></div>
@@ -290,6 +328,25 @@ include 'includes/header.php';
                     <td style="color:<?= $net>=0?'#059669':'var(--red)' ?>; font-family:'Quicksand',sans-serif; font-weight:700">
                         <?= $net>=0?'+':'' ?>Rp <?= number_format($net,0,',','.') ?>
                     </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        <?php endif; ?>
+    </div>
+    <div class="content-section" style="margin-top:20px;">
+        <div class="section-title">Per Kategori — <?= $year ?></div>
+        <?php if (empty($yearByCat)): ?>
+            <div class="empty-state"><div class="empty-icon">🌸</div><p>Belum ada data tahun ini.</p></div>
+        <?php else: ?>
+        <table class="data-table">
+            <thead><tr><th>Kategori</th><th>Tipe</th><th>Total</th></tr></thead>
+            <tbody>
+                <?php foreach ($yearByCat as $row): ?>
+                <tr>
+                    <td><?= $row['icon'] ?> <?= htmlspecialchars($row['name']) ?></td>
+                    <td><span class="badge badge-<?= $row['type'] ?>"><?= $row['type']==='income'?'📥 Masuk':'📤 Keluar' ?></span></td>
+                    <td class="amount-<?= $row['type'] ?>">Rp <?= number_format($row['total'],0,',','.') ?></td>
                 </tr>
                 <?php endforeach; ?>
             </tbody>
