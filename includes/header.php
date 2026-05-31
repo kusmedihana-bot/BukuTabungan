@@ -16,11 +16,11 @@
             <span class="brand-name">BukuTabungan</span>
         </div>
         <ul class="nav-links">
-            <li><a href="/bukutabungan/index.php" class="<?= basename($_SERVER['PHP_SELF']) === 'index.php' ? 'active' : '' ?>"><span class="nav-icon">🏠</span> Dashboard</a></li>
-            <li><a href="/bukutabungan/transactions.php" class="<?= basename($_SERVER['PHP_SELF']) === 'transactions.php' ? 'active' : '' ?>"><span class="nav-icon">💸</span> Transaksi</a></li>
-            <li><a href="/bukutabungan/wallets.php" class="<?= basename($_SERVER['PHP_SELF']) === 'wallets.php' ? 'active' : '' ?>"><span class="nav-icon">👛</span> Dompet</a></li>
-            <li><a href="/bukutabungan/categories.php" class="<?= basename($_SERVER['PHP_SELF']) === 'categories.php' ? 'active' : '' ?>"><span class="nav-icon">🏷️</span> Kategori</a></li>
-            <li><a href="/bukutabungan/summary.php" class="<?= basename($_SERVER['PHP_SELF']) === 'summary.php' ? 'active' : '' ?>"><span class="nav-icon">📊</span> Ringkasan</a></li>
+            <li><a href="/index.php" class="<?= basename($_SERVER['PHP_SELF']) === 'index.php' ? 'active' : '' ?>"><span class="nav-icon">🏠</span> Dashboard</a></li>
+            <li><a href="/transactions.php" class="<?= basename($_SERVER['PHP_SELF']) === 'transactions.php' ? 'active' : '' ?>"><span class="nav-icon">💸</span> Transaksi</a></li>
+            <li><a href="/wallets.php" class="<?= basename($_SERVER['PHP_SELF']) === 'wallets.php' ? 'active' : '' ?>"><span class="nav-icon">👛</span> Dompet</a></li>
+            <li><a href="/categories.php" class="<?= basename($_SERVER['PHP_SELF']) === 'categories.php' ? 'active' : '' ?>"><span class="nav-icon">🏷️</span> Kategori</a></li>
+            <li><a href="/summary.php" class="<?= basename($_SERVER['PHP_SELF']) === 'summary.php' ? 'active' : '' ?>"><span class="nav-icon">📊</span> Ringkasan</a></li>
         </ul>
     </nav>
     <main class="main-content">
