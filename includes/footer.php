@@ -1,7 +1,8 @@
-<?php require_once dirname(__DIR__) . '/config/base_url.php'; ?>
         </div><!-- .page-body -->
     </main>
 </div><!-- .app-wrapper -->
-<script src="<?= BASE_URL ?>/assets/js/app.js"></script>
+<?php $depth = substr_count(str_replace('\\','/',dirname($_SERVER['SCRIPT_NAME'])), '/');
+      $root  = str_repeat('../', max(0, $depth - 1)); ?>
+<script src="<?= $root ?>assets/js/app.js"></script>
 </body>
 </html>

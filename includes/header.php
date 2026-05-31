@@ -1,4 +1,3 @@
-<?php require_once dirname(__DIR__) . '/config/base_url.php'; ?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -7,12 +6,18 @@
     <title><?= htmlspecialchars($pageTitle ?? 'BukuTabungan') ?> — BukuTabungan</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
+    <?php
+    // Depth-aware relative path: works on localhost/subdir AND Railway root
+    $depth = substr_count(str_replace('\\','/',dirname($_SERVER['SCRIPT_NAME'])), '/');
+    // On Railway root: depth=1 (/index.php → dirname=/  → 1 slash → 0 steps up)
+    // On localhost:    depth=2 (/bukutabungan/index.php → dirname=/bukutabungan → 2 slashes → 1 step up)
+    $root = str_repeat('../', max(0, $depth - 1));
+    ?>
+    <link rel="stylesheet" href="<?= $root ?>assets/css/style.css">
 </head>
 <body>
 <div class="app-wrapper">
 
-    <!-- Mobile top bar -->
     <header class="mobile-topbar">
         <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu">
             <span></span><span></span><span></span>
@@ -21,7 +26,6 @@
         <div style="width:40px"></div>
     </header>
 
-    <!-- Overlay -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <nav class="sidebar" id="sidebar">
@@ -31,11 +35,11 @@
             <button class="sidebar-close" id="sidebarClose" aria-label="Close menu">✕</button>
         </div>
         <ul class="nav-links">
-            <li><a href="<?= BASE_URL ?>/index.php" class="<?= basename($_SERVER['PHP_SELF']) === 'index.php' ? 'active' : '' ?>"><span class="nav-icon">🏠</span> Dashboard</a></li>
-            <li><a href="<?= BASE_URL ?>/transactions.php" class="<?= basename($_SERVER['PHP_SELF']) === 'transactions.php' ? 'active' : '' ?>"><span class="nav-icon">💸</span> Transaksi</a></li>
-            <li><a href="<?= BASE_URL ?>/wallets.php" class="<?= basename($_SERVER['PHP_SELF']) === 'wallets.php' ? 'active' : '' ?>"><span class="nav-icon">👛</span> Dompet</a></li>
-            <li><a href="<?= BASE_URL ?>/categories.php" class="<?= basename($_SERVER['PHP_SELF']) === 'categories.php' ? 'active' : '' ?>"><span class="nav-icon">🏷️</span> Kategori</a></li>
-            <li><a href="<?= BASE_URL ?>/summary.php" class="<?= basename($_SERVER['PHP_SELF']) === 'summary.php' ? 'active' : '' ?>"><span class="nav-icon">📊</span> Ringkasan</a></li>
+            <li><a href="<?= $root ?>index.php"        class="<?= basename($_SERVER['PHP_SELF']) === 'index.php'        ? 'active' : '' ?>"><span class="nav-icon">🏠</span> Dashboard</a></li>
+            <li><a href="<?= $root ?>transactions.php"  class="<?= basename($_SERVER['PHP_SELF']) === 'transactions.php'  ? 'active' : '' ?>"><span class="nav-icon">💸</span> Transaksi</a></li>
+            <li><a href="<?= $root ?>wallets.php"       class="<?= basename($_SERVER['PHP_SELF']) === 'wallets.php'       ? 'active' : '' ?>"><span class="nav-icon">👛</span> Dompet</a></li>
+            <li><a href="<?= $root ?>categories.php"    class="<?= basename($_SERVER['PHP_SELF']) === 'categories.php'    ? 'active' : '' ?>"><span class="nav-icon">🏷️</span> Kategori</a></li>
+            <li><a href="<?= $root ?>summary.php"       class="<?= basename($_SERVER['PHP_SELF']) === 'summary.php'       ? 'active' : '' ?>"><span class="nav-icon">📊</span> Ringkasan</a></li>
         </ul>
     </nav>
 
